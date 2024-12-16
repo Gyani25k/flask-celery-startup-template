@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  flask:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    environment:
+      FLASK_APP: app/routes.py
+      FLASK_RUN_HOST: 0.0.0.0
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6.2
+    ports:
+      - "6379:6379"
+
+  celery-worker:
+    build: .
+    volumes:
+      - .:/app
+    command: celery --app app.tasks.celery worker --loglevel=info
+    depends_on:
+      - redis
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+
+  flower:
+    build: .
+    volumes:
+      - .:/app
+    command: celery --app app.tasks.celery flower --port=5555
+    ports:
+      - "5555:5555"
+    depends_on:
+      - redis
+      - celery-worker
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
