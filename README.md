@@ -124,7 +124,7 @@ This project is licensed under the MIT License.
 
 ## Contact
 For questions, issues, or suggestions, please reach out:
-- **GitHub**: [Your GitHub Profile](https://github.com/Gyani25k)
+- **GitHub**: [GitHub Profile](https://github.com/Gyani25k)
 
 ---
 
